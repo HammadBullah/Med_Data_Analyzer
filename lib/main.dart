@@ -3,40 +3,45 @@ import 'dart:io';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dash/flutter_dash.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:google_fonts/google_fonts.dart'; // Import Google Fonts package
+import 'package:google_fonts/google_fonts.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Patient Data Analyzer',
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
-        buttonTheme: ButtonThemeData(
+        buttonTheme: const ButtonThemeData(
           buttonColor: Colors.orange,
           textTheme: ButtonTextTheme.primary,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: Colors.orange,
-            onPrimary: Colors.white,
+            foregroundColor: Colors.white, backgroundColor: Colors.orange,
           ),
         ),
       ),
-      home: MyHomePage(),
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
 
@@ -102,6 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
     var selectedData = data.firstWhere((element) => element['Name'] == selectedName);
     var reportFile = await _generateReport(selectedData);
 
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Report generated: ${reportFile.path}')),
     );
@@ -229,7 +235,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   bool _isAbnormal(dynamic value, double? lowerRange, double? upperRange) {
-    if (value == null || !(value is num)) return false;
+    if (value == null || value is! num) return false;
     double parsedValue = value.toDouble();
     return (lowerRange != null && parsedValue < lowerRange) || (upperRange != null && parsedValue > upperRange);
   }
@@ -255,8 +261,18 @@ Widget build(BuildContext context) {
       child: Container(
         width: double.infinity,
         height: double.infinity,
-        padding: EdgeInsets.all(16.0),
-        color: Color.fromARGB(255, 83, 18, 126),
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.centerRight,
+            end: Alignment.centerLeft,
+              colors: [
+                Color.fromARGB(255, 87, 29, 125), 
+                Color.fromARGB(255, 24, 10, 65), // Dark purple
+                 // Vibrant magenta
+              ],
+            ),
+        ),
+        padding: const EdgeInsets.all(16.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -266,10 +282,10 @@ Widget build(BuildContext context) {
                 children: [
                   Container(
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(119, 23, 186, 1),
+                      color: const Color.fromRGBO(119, 23, 186, 1),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: SvgPicture.asset(
                       'assets/images/12085808_20944293.svg',
                       height: 500,
@@ -279,16 +295,26 @@ Widget build(BuildContext context) {
                 ],
               ),
             ),
+            const Padding(
+                padding: EdgeInsets.all(50),
+                child: Dash(
+                  direction: Axis.vertical,
+                  length: 494,
+                  dashLength: 5,
+                  dashThickness: 1,
+                  dashColor: Color.fromRGBO(119, 23, 186, 1),
+                ),
+              ),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(118, 23, 186, 0),
+                      color: const Color.fromRGBO(118, 23, 186, 0),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    padding: EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(16),
                     child: SvgPicture.asset(
                       'assets/images/Analyze.svg',
                       height: 100,
@@ -297,8 +323,8 @@ Widget build(BuildContext context) {
                   ),
                   Text(
                     'Medical Analyzer',
-                    style: GoogleFonts.montserrat(fontSize: 24, fontWeight: FontWeight.bold, color: Color.fromARGB(221, 255, 255, 255))),
-                  SizedBox(height: 50),
+                    style: GoogleFonts.montserrat(fontSize: 24, fontWeight: FontWeight.bold, color: const Color.fromARGB(221, 255, 255, 255))),
+                  const SizedBox(height: 50),
                   ElevatedButton(
                     onPressed: _pickFile,
                     child: Text('Select File to Analyze', style: GoogleFonts.montserrat()),
@@ -308,18 +334,18 @@ Widget build(BuildContext context) {
                       padding: const EdgeInsets.all(8.0),
                       child: Text('Selected file: ${_file!.path}', style: GoogleFonts.montserrat(color: const Color.fromARGB(255, 173, 173, 173))),
                     ),
-                    SizedBox(height: 50),
+                    const SizedBox(height: 50),
                   if (names.isNotEmpty)
                    Padding(
-                    padding: EdgeInsets.fromLTRB(100,0,100,0),
+                    padding: const EdgeInsets.fromLTRB(100,0,100,0),
                     child: DropdownButtonFormField<String>(
                       decoration: InputDecoration(
                   enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: const Color.fromARGB(0, 33, 149, 243), width: 2),
+                    borderSide: const BorderSide(color: Color.fromARGB(0, 33, 149, 243), width: 2),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(color: const Color.fromARGB(0, 33, 149, 243), width: 2),
+                    borderSide: const BorderSide(color: Color.fromARGB(0, 33, 149, 243), width: 2),
                     borderRadius: BorderRadius.circular(20),
                   ),
                   filled: true,
@@ -335,12 +361,12 @@ Widget build(BuildContext context) {
                       items: names.map<DropdownMenuItem<String>>((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
-                          child: Text(value, style: TextStyle(color: Colors.white),),
+                          child: Text(value, style: const TextStyle(color: Colors.white),),
                         );
                       }).toList(),
                     ),
                     ),
-                    SizedBox(height: 30,),
+                    const SizedBox(height: 30,),
                   if (selectedName != null)
                     ElevatedButton(
                       onPressed: _generateReportForSelectedName,
