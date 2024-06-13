@@ -271,7 +271,7 @@ Widget build(BuildContext context) {
                     ),
                     padding: EdgeInsets.all(16),
                     child: SvgPicture.asset(
-                      'assets/images/svgviewer-output (1).svg',
+                      'assets/images/12085808_20944293.svg',
                       height: 500,
                       width: 400,
                     ),
