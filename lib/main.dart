@@ -3,9 +3,9 @@ import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dash/flutter_dash.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:open_file/open_file.dart';
 
 void main() {
@@ -13,7 +13,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,8 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white, backgroundColor: Colors.orange,
+            foregroundColor: Colors.white,
+            backgroundColor: Colors.orange,
           ),
         ),
       ),
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -51,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _pickFile() async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['xlsx']);
-    if (result!= null) {
+    if (result != null) {
       setState(() {
         _file = File(result.files.single.path!);
         _analyzeData();
@@ -79,22 +80,22 @@ class _MyHomePageState extends State<MyHomePage> {
             'Address': row[4]?.value.toString(),
             'Alternative Number': row[5]?.value.toString(),
             'Aadhar Number': row[6]?.value.toString(),
-            'Height': int.tryParse(row[7]!.value.toString())?? 0, // Convert to int
-            'Weight': int.tryParse(row[8]!.value.toString())?? 0, // Convert to int
-            'High BP': int.tryParse(row[9]!.value.toString())?? 0, // Convert to int
-            'Low BP': int.tryParse(row[10]!.value.toString())?? 0, // Convert to int
-            'Heart Rate': int.tryParse(row[11]!.value.toString())?? 0, // Convert to int
-            'SpO2': int.tryParse(row[12]!.value.toString())?? 0, // Convert to int
-            'Temperature': int.tryParse(row[13]!.value.toString())?? 0, // Convert to int
-            'Blood Glucose': int.tryParse(row[14]!.value.toString())?? 0, // Convert to int
+            'Height': int.tryParse(row[7]!.value.toString()) ?? 0,
+            'Weight': int.tryParse(row[8]!.value.toString()) ?? 0,
+            'High BP': int.tryParse(row[9]!.value.toString()) ?? 0,
+            'Low BP': int.tryParse(row[10]!.value.toString()) ?? 0,
+            'Heart Rate': int.tryParse(row[11]!.value.toString()) ?? 0,
+            'SpO2': int.tryParse(row[12]!.value.toString()) ?? 0,
+            'Temperature': int.tryParse(row[13]!.value.toString()) ?? 0,
+            'Blood Glucose': int.tryParse(row[14]!.value.toString()) ?? 0,
           });
-          names.add(name?? 'Unknown');
+          names.add(name ?? 'Unknown');
         }
       }
     }
 
     setState(() {
-      selectedName = names.isNotEmpty? names[0] : null;
+      selectedName = names.isNotEmpty ? names[0] : null;
     });
   }
 
@@ -119,7 +120,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _addTitle(pdf);
     _addPatientInfo(pdf, patientData);
     _addAbnormalities(pdf, patientData);
-    _addRecommendations(pdf, patientData);
 
     final directory = await getApplicationDocumentsDirectory();
     final file = File('${directory.path}/patient_report_${patientData['Name']}.pdf');
@@ -133,7 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
       pw.Page(
         build: (pw.Context context) {
           return pw.Center(
-            child:pw.Text(
+            child: pw.Text(
               'Patient Report',
               style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
             ),
@@ -176,17 +176,65 @@ class _MyHomePageState extends State<MyHomePage> {
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
-          return pw.Table.fromTextArray(
-            headers: const <String>['Parameter', 'Value', 'Normal Range'],
-            data: <List<String>>[
-              <String>['Height', '${patientData['Height']} cm', '150-190 cm'],
-              <String>['Weight', '${patientData['Weight']} kg', '50-90 kg'],
-              <String>['High BP', '${patientData['High BP']} mmHg', '120-140 mmHg'],
-              <String>['Low BP', '${patientData['Low BP']} mmHg', '60-120 mmHg'],
-              <String>['Heart Rate', '${patientData['Heart Rate']} bpm', '60-100 bpm'],
-              <String>['SpO2', '${patientData['SpO2']} %', '95-100 %'],
-              <String>['Temperature', '${patientData['Temperature']} °F', '92-98.6 °F'],
-              <String>['Blood Glucose', '${patientData['Blood Glucose']} mg/dL', '70-140 mg/dL'],
+          List<List<String>> abnormalities = [];
+
+          // Check for BMI
+          double bmi = _calculateBMI(patientData['Height'], patientData['Weight']);
+          if (_isAbnormal(bmi, 18.5, 30)) {
+            abnormalities.addAll([
+              ['BMI', '${bmi.toStringAsFixed(1)}', ''],
+              ['Underweight', 'Increase food intake, take nutrient-rich foods, take protein and weight gainer supplements. Get checked by a medical supervisor for any underlying infections or diseases that can cause low weight.', ''],
+              ['Obesity', 'Control diet, eat less junk food, control salt and sugar levels. Perform exercises such as weight lifting and cardio exercise, practice active lifestyle. Get checked for thyroid and any possible infections that can cause weight gain.', ''],
+            ]);
+          }
+
+          // Check for Blood Pressure
+          int highBP = patientData['High BP'];
+          int lowBP = patientData['Low BP'];
+          if (_isAbnormal(highBP, 120, null) || _isAbnormal(lowBP, 80, null)) {
+            abnormalities.addAll([
+              ['Blood Pressure', 'Low-optimal ', 'Check blood glucose and thyroid levels. Wear compression stockings. Get checked by a medical supervisor for any infection alert.'],
+            ]);
+          }
+          if (_isAbnormal(highBP, null, 140) || _isAbnormal(lowBP, null, 90)) {
+            abnormalities.addAll([
+              ['Blood Pressure', 'High', 'Reduce salt (sodium) intake, quit smoking and limit alcohol, include healty protein-rich foods such as fish, seafood, legumes, yoghurt, healthy fats and oils, etc.'],
+            ]);
+          }
+
+          // Check for Heart Rate
+          int heartRate = patientData['Heart Rate'];
+          if (_isAbnormal(heartRate, 60, null)) {
+            abnormalities.addAll([
+              ['Heart Rate', 'Low', 'Eat magnesium-rich foods such as nuts, cereals, spinach, etc. Eat Omega-3-Fatty Acids rich foods such as walnuts, vegetable oils, seafood, etc. Cardioprotective foods such as green vegetables, fresh fruits, etc. Avoid stimulants like alcohol, beer, coffee, chocolate, etc.'],
+            ]);
+          }
+          if (_isAbnormal(heartRate, null, 100)) {
+            abnormalities.addAll([
+              ['Heart Rate', 'High', 'Perform light and gentle exercises such as walking. Do regular medical checkups.'],
+            ]);
+          }
+
+          if (abnormalities.isEmpty) {
+            abnormalities.add(['No abnormalities detected.', 'Report is normal',]);
+                        return pw.Text(
+              'No abnormalities detected.',
+              style: pw.TextStyle(fontWeight: pw.FontWeight.normal, fontSize: 14),
+            );
+          }
+
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text(
+                'Abnormalities:',
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16),
+              ),
+              pw.SizedBox(height: 10),
+              pw.Table.fromTextArray(
+                headers: const ['Parameter', 'Inference', 'Dietary Recommendations'],
+                data: abnormalities,
+              ),
             ],
           );
         },
@@ -198,49 +246,61 @@ class _MyHomePageState extends State<MyHomePage> {
     pdf.addPage(
       pw.Page(
         build: (pw.Context context) {
-          return pw.Table.fromTextArray(
-            headers: const <String>['Parameter', 'Recommendation'],
-            data: <List<String>>[
-              if (_isAbnormal(patientData['Height'], 150, 190))
-                <String>['Height', 'Consult a physician.'],
-              if (_isAbnormal(patientData['Weight'], 50, 90))
-                <String>['Weight', 'Consult a physician.'],
-              if (_isAbnormal(patientData['High BP'], 120, 140))
-                <String>['High BP', 'Consult a Cardiologist and reduce salt intake.'],
-              if (_isAbnormal(patientData['Low BP'], 60, 120))
-                <String>['Low BP', 'Consult a General Physician and increase fluid and salt intake.'],
-              if (_isAbnormal(patientData['Heart Rate'], 60, 100))
-                <String>['Heart Rate', 'Consult a Cardiologist and ensure regular exercise.'],
-              if (_isAbnormal(patientData['SpO2'], 95, null))
-                <String>['SpO2', 'Consult a Pulmonologist and practice deep breathing exercises.'],
-              if (_isAbnormal(patientData['Temperature'], 92, 98.6))
-                <String>['Temperature', 'Consult a General Physician and maintain hydration and rest.'],
-              if (_isAbnormal(patientData['Blood Glucose'], 70, 140))
-                <String>['Blood Glucose', 'Consult an Endocrinologist and follow a balanced diet with low sugar intake.'],
-              if (!_hasAnyAbnormalities(patientData))
-                <String>['', 'No abnormalities found. No recommendations.'],
-            ].where((element) => element!= null).toList(),
+          List<List<String>> recommendations = [];
+
+          // Check for BMI recommendations
+          double bmi = _calculateBMI(patientData['Height'], patientData['Weight']);
+          if (_isAbnormal(bmi, 18.5, 30)) {
+            if (bmi < 18.5) {
+              recommendations.add([
+                'BMI',
+                'Underweight',
+                'Increase food intake, take nutrient-rich foods, take protein and weight gainer supplements. Get checked by a medical supervisor for any underlying infections or diseases that can cause low weight.',
+              ]);
+            } else if (bmi >= 30) {
+              recommendations.add([
+                'BMI',
+                'Obesity',
+                'Control diet, eat less junk food, control salt and sugar levels. Perform exercises such as weight lifting and cardio exercise, practice active lifestyle. Get checked for thyroid and any possible infections that can cause weight gain.',
+              ]);
+            }
+          }
+
+          // Display recommendations in a formatted manner
+          if (recommendations.isEmpty) {
+            recommendations.add(['No recommendations needed.', '']);
+          }
+
+          return pw.Column(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Text(
+                'Recommendations:',
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 16),
+              ),
+              pw.SizedBox(height: 10),
+              pw.Table.fromTextArray(
+                headers: const ['Parameter', 'Recommendation'],
+                data: recommendations,
+              ),
+            ],
           );
         },
       ),
     );
   }
 
+  double _calculateBMI(dynamic height, dynamic weight) {
+    if (height == null || weight == null) return 0.0;
+
+    double heightInMeters = height / 100; // Convert height from cm to meters
+    return weight / (heightInMeters * heightInMeters);
+  }
+
   bool _isAbnormal(dynamic value, double? lowerRange, double? upperRange) {
     if (value == null || value is! num) return false;
     double parsedValue = value.toDouble();
-    return (lowerRange!= null && parsedValue < lowerRange) || (upperRange!= null && parsedValue > upperRange);
-  }
-
-  bool _hasAnyAbnormalities(Map<String, dynamic> patientData) {
-    return _isAbnormal(patientData['Height'], 150, 190) ||
-        _isAbnormal(patientData['Weight'], 50, 90) ||
-        _isAbnormal(patientData['High BP'], 120, 140) ||
-        _isAbnormal(patientData['Low BP'], 60, 120) ||
-        _isAbnormal(patientData['Heart Rate'], 60, 100) ||
-        _isAbnormal(patientData['SpO2'], 95, null) ||
-        _isAbnormal(patientData['Temperature'], 92, 98.6) ||
-        _isAbnormal(patientData['Blood Glucose'], 70, 140);
+    return (lowerRange != null && parsedValue < lowerRange) || (upperRange != null && parsedValue > upperRange);
   }
 
   @override
@@ -257,7 +317,6 @@ class _MyHomePageState extends State<MyHomePage> {
               colors: [
                 Color.fromARGB(255, 87, 29, 125),
                 Color.fromARGB(255, 24, 10, 65), // Dark purple
-                // Vibrant magenta
               ],
             ),
           ),
@@ -319,15 +378,15 @@ class _MyHomePageState extends State<MyHomePage> {
                       onPressed: _pickFile,
                       child: Text('Select File to Analyze', style: TextStyle()),
                     ),
-                    if (_file!= null)
+                    if (_file != null)
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                                                child: Text('Selected file: ${_file!.path}', style: TextStyle(color: const Color.fromARGB(255, 173, 173, 173))),
+                        child: Text('Selected file: ${_file!.path}', style: TextStyle(color: const Color.fromARGB(255, 173, 173, 173))),
                       ),
                     const SizedBox(height: 50),
                     if (names.isNotEmpty)
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(100,0,100,0),
+                        padding: const EdgeInsets.fromLTRB(100, 0, 100, 0),
                         child: DropdownButtonFormField<String>(
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
@@ -351,12 +410,17 @@ class _MyHomePageState extends State<MyHomePage> {
                           items: names.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
-                              child: Text(value, style: const TextStyle(color: Colors.white),),
+                              child: Text(
+                                value,
+                                style: const TextStyle(color: Colors.white),
+                              ),
                             );
                           }).toList(),
                         ),
                       ),
-                    const SizedBox(height: 30,),
+                    const SizedBox(
+                      height: 30,
+                    ),
                     if (selectedName != null)
                       ElevatedButton(
                         onPressed: _generateReportForSelectedName,
@@ -372,3 +436,4 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
