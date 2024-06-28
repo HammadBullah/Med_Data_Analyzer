@@ -513,7 +513,8 @@ bool _isAbnormal(value, min, max) {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                child: Column(
+                child: SingleChildScrollView(
+                  child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
@@ -530,7 +531,7 @@ bool _isAbnormal(value, min, max) {
                     ),
                   ],
                 ),
-              ),
+              )),
               const Padding(
                 padding: EdgeInsets.all(50),
                 child: Dash(
@@ -542,7 +543,8 @@ bool _isAbnormal(value, min, max) {
                 ),
               ),
               Expanded(
-                child: Column(
+                child: SingleChildScrollView(
+                  child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Container(
@@ -574,11 +576,11 @@ bool _isAbnormal(value, min, max) {
                     const SizedBox(height: 50),
                     if (names.isNotEmpty)
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(100, 0, 100, 0),
+                        padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                         child: DropdownButtonFormField<String>(
                           decoration: InputDecoration(
                             enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Color.fromARGB(0, 33, 149, 243), width: 2),
+                              borderSide: const BorderSide(color: Color.fromARGB(0, 33, 149, 243), width: 1),
                               borderRadius: BorderRadius.circular(20),
                             ),
                             border: OutlineInputBorder(
@@ -639,7 +641,7 @@ bool _isAbnormal(value, min, max) {
                   ),
                   ],
                 ),
-              ),
+              )),
             ],
           ),
         ),
