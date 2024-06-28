@@ -28,5 +28,10 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+	<key>NSWindowAllowsFullScreen</key>
+<true/>
+
+<key>NSApplicationPresentationMode</key>
+<string>NSApplicationPresentationFullScreen</string>
 </dict>
 </plist>
