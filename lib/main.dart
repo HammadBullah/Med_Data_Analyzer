@@ -210,8 +210,8 @@ bool _isAbnormal(value, min, max) {
               <String>['Aadhar Number', patientData['Aadhar Number']!],
               <String>['Height', '${patientData['Height']} cm'],
               <String>['Weight', '${patientData['Weight']} kg'],
-              <String>['High BP', '${patientData['High BP']} mmHg'],
-              <String>['Low BP', '${patientData['Low BP']} mmHg'],
+              <String>['Systolic BP', '${patientData['High BP']} mmHg'],
+              <String>['Diastolic BP', '${patientData['Low BP']} mmHg'],
               <String>['Heart Rate', '${patientData['Heart Rate']} bpm'],
               <String>['SpO2', '${patientData['SpO2']} %'],
               <String>['Temperature', '${patientData['Temperature']} °F'],
@@ -237,14 +237,29 @@ bool _isAbnormal(value, min, max) {
                 'BMI',
                 '${bmi.toStringAsFixed(1)}',
                 'Underweight',
-                'Increase food intake and ensure a balanced diet',
+                'Increase food intake, take nutrient rich foods, take protein and weight gainer supplements. More carbs and protein, high PUFA sources to add calories in diet with essentiall vit and minerals. Take calorie-dense foods like smoothies, shakes, nuts and oilseeds, cheese, and full-cream dairy products. High biological value proteins like egg, lean meat, and fish. The diet must include whole grains, millet, pulses, and plenty of fruits and vegetables. Never skip major meals, especially breakfast. Breakfast should be the heaviest meal of the day. Take 5-6 small and frequent meals. ',
+              ]);
+            } 
+             else if (bmi >= 18.5 || bmi <= 24.9) {
+              abnormalities.add([
+                'BMI',
+                '${bmi.toStringAsFixed(1)}',
+                'Healthy',
+                'combination of simple and complex carbs, moderate fat and protein with fruits and vegetables. Physically active. Include combination of simple and complex carbohydrates. Include protein sources such as low-fat dairy products, egg, fish, lean meat, and pulses Physical activity should be maintained. Include plenty of seasonal fruits and vegetables, as it add fiber to your diet. Remove unsaturated fat from your diet such as palm oil, reheated oil, coconut oil, and red meat. Prefer omega 3 and omega 6 fatty acid-containing food products like nuts and oilseeds, olive oil, fish, fish oil, and eggs.',
+              ]);
+            } else if (bmi >= 25 || bmi <= 29.9) {
+              abnormalities.add([
+                'BMI',
+                '${bmi.toStringAsFixed(1)}',
+                'Overweight',
+                'less carbs, high protein, low fat. More of fiber. Maintain hydration level and physically active. Avoid junk and fried food. Include more of complex carbs in your diet such as whole grains, whole cereals, millet etc. Inlclude more fibre in the diet such as fruits and vegetables. Add more of protein in the diet. Avoid fried, packaged, junk and, outside food. Avoid salad dressing and binge eating. Avoid using reheated oil, palm oil, and coconut oil. include walnuts, almonds, flaxseeds, chia seeds, sunflower, and watermelon seeds.  ',
               ]);
             } else if (bmi >= 30) {
               abnormalities.add([
                 'BMI',
                 '${bmi.toStringAsFixed(1)}',
                 'Obesity',
-                'Adopt a healthier diet and regular exercise',
+                'Control diet, eat less junk food, control salt and sugar levels. Less carbs, high protein, low fat. More of fiber. Maintain hydration level and physically active. Avoid junk and fried food. Avoid simple carbs and prefer complex carbs over them like whole grain, whole cereals, millets or multigrain products. Avoid baked and packaged products. Maintain physical acitivity and remove calorie dense products from the diet such as juices, shakes, sugar and sugary products, carbonated drinks abd junk food. Prefer combination of healthy fats and oils such as mustard oil, olive oil, seeds, soyabean. Avoid egg yolks and red meat.',
               ]);
             }
           }
@@ -257,15 +272,29 @@ bool _isAbnormal(value, min, max) {
               'Blood Pressure',
               '${highBP}/${lowBP} mmHg',
               'Hypotension',
-              'Use more salts, drink more water, eat smaller meals and limit alcohol. Check for your blood glucose level and thyroid level and wear compression stockings. Get yourself seen to a medical supervisor for any infection alert.',
+              'Use more salts, drink more water, eat smaller meals and limit alcohol. Use saline solutions, and pickles, or add more salt to the diet. Add B12 and folate to the diet such as lean meat, fish, fish oil, cheese, dairy products, GLVs, fruits and vegetables, and beans. Reduce carbs intake. Drink plenty of fluid. Include caffeine such as coffee caffeinated drinks. ',
+            ]);
+          }else if (_isAbnormal(highBP, 120, 129) || _isAbnormal(lowBP, 80, 84)) {
+            abnormalities.add([
+              'Blood Pressure',
+              '${highBP}/${lowBP} mmHg',
+              'Normal',
+              'Take a combination of simple and complex carbs. Moderate amount of protein and fat. Add fruits and vegetables to your diet. Take only 5-6 gm of salt a day. Low-fat dairy products to be included. Maintain hydration level and physical activity.',
+            ]);
+          }else if (_isAbnormal(highBP, 130, 139) || _isAbnormal(lowBP, 85, 90)) {
+            abnormalities.add([
+              'Blood Pressure',
+              '${highBP}/${lowBP} mmHg',
+              'High-normal',
+              'Avoid extra salt, pickles, papad, and salad dressing. Prefer low-fat dairy products. Follow the DASH diet which Includes more fiber such as fruits, vegetables, whole grains, whole cereals, millets, and seeds. It includes fat-free or low-fat dairy products, fish, poultry, beans. Limit sugar and saturated fat such as meat, reheated oil, palm oil, and full-fat dairy products. Physical activity should be maintained. Maintain hydration level and avoid alcohol consumption. Reduce salt upto 2-3 gm per day.',
             ]);
           }
-          if (_isAbnormal(highBP, 0, 140) || _isAbnormal(lowBP, 0, 90)) {
+          else if (_isAbnormal(highBP, 0, 140) || _isAbnormal(lowBP, 0, 90)) {
             abnormalities.add([
               'Blood Pressure',
               '${highBP}/${lowBP} mmHg',
               'Hypertension',
-              'Reduce salt (sodium) intake, quit smoking and limit alcohol, include healty protein-rich foods such as fish, seafood, legumes, yoghurt, healthy fats and oils, etc. Practice healthy excercise and weight control. Check your blood glucose and thyroid level. Get checked by a medical supervisor.',
+              'Reduce salt (sodium) intake, quit smoking and limit alcohol, include healty protein-rich foods such as fish, seafood, legumes, yoghurt, healthy fats and oils, etc. Include more fibre to the diet such as whole grains, whole cereals, millets, fruits and vegetables to your diet. Physical activity should be maintained. Maintain hydration level and avoid alcohol consumption. Avoid refined, baked, packaged, fried, and junk food. Reduce salt consumption to 1500 mg per day. Avoid extra salty products, salad dressing. Instead you can use lemon or citrus food products.  ',
             ]);
           }
 
@@ -276,7 +305,7 @@ bool _isAbnormal(value, min, max) {
               'Heart Rate',
               '${heartRate} bpm',
               'Bradycardia',
-              'Eat magnesium rich foods such as nuts, cereals, spinach, etc. Foods rich in Omega-3-FA such as walnuts, vegetable oils, seafoods, etc. Cardioprotective foods suc has green vegetables, fresh fruits, etc. Food containing stimulants such as alcohol, beer, coffee, chocolate, etc should be avoided. Perform light and gentle excercises such as walking and do a regulat medical checkup.',
+              'Eat magnesium rich foods such as nuts, cereals, spinach, etc. Foods rich in Omega-3-FA such as walnuts, vegetable oils, seafoods, etc. Cardioprotective foods suc has green vegetables, fresh fruits, etc. Food containing stimulants such as alcohol, beer, coffee, chocolate, etc should be avoided. Diet followed by low-fat, low-salt and moderate sugar. Included fruits and vegetables. And most important physically active. Include fruits and vegetables, nuts, and beans to your diet. Include omega-3 and omega-6 fatty acid food products such as egg white, fish, lean meat. Avoid excess intake of salt, salad dressings, pickles, packaged food and other salty products. Avoid alcohol, smoking, and stress. Inlucde essential minerals in your diet such as calcium, potassium and magnesium such as green leafy veg, seeds, dairy products, fruits, beans and legumes.',
             ]);
           }
           if (_isAbnormal(heartRate, 0, 100)) {
@@ -284,7 +313,7 @@ bool _isAbnormal(value, min, max) {
               'Heart Rate',
               '${heartRate} bpm',
               'Tachycardia',
-              'Consult a Doctor.',
+              'Maintain healthy body weight. Less carbs, less fat, low salt, moderate protein, and high fibre. Prefer omega-3 and omega-6 fatty acids such as olive oil, fish, fish oil, nuts and seeds such as almonds, walnuts, chia seeds, flaxseeds, sunflower seeds, pumpkin seeds and watermelon seeds. Limit potassium-rich foods such as banana, potato, lemon, coconut water, soybean, green leafy veg, egg yolk, and dried fruits Add more fibre to your diet such as fruits and veg. Avoid alcohol, caffeine and smoking. Add calcium, magnesium, vit D as important minerals. ',
             ]);
           }
 
@@ -295,7 +324,7 @@ bool _isAbnormal(value, min, max) {
               'SpO2',
               '${spO2} %',
               'Low Oxygen Saturation',
-              'Seek medical attention',
+              'Include vitamins and minerals in your diet to regulate oxygen level such as iron, folic acid, and B12. Include fruits and vegetables such as citrus fruits, pomegranate, berries, kiwi, spinach, beans, beetroot, green leafy veg etc for iron.  Never skip major meals and be physically active. Plenty of fluid to be taken including juices, soups etc. Avoid alcohol, smoking and caffeine intake.',
             ]);
           }
           
@@ -306,36 +335,43 @@ bool _isAbnormal(value, min, max) {
             abnormalities.add([
               'Temperature',
               '${temperature} °F',
-              'Abnormal Temperature',
-              'Monitor and consult a healthcare provider if necessary',
+              'low',
+              'Include High calorie, high fat, high carbs and morderate protein diet.   Include high biological value protein such as eggs, fish, lean meat etc. Eat antioxidant rich food such as fruits like berries, citrus fruits.  Drink hot beverages like hot soups, caffeine and a bit of any alcoholic beverages.',
             ]);
           }
-          if (_isAbnormal(temperature, 0, 100)) {
+          else if (_isAbnormal(temperature, 0, 100)) {
             abnormalities.add([
               'Temperature',
               '${temperature} °F',
-              'Abnormal Temperature',
-              'Monitor and consult a healthcare provider if necessary',
+              'high',
+              'Include more simple carbs. Include soft or well-cooked food. Add fruits to your diet. Take plenty of fluids including soups, juices, coconut water, lemon water, smoothies, shakes etc. Add antioxidants (vit C and Vit E) such as citrus foods, green leafy veg etc. Add high protein sources such as pulses, eggs, dairy products, lean meat, fish etc. Include juices made of herbs and condiments.',
             ]);
           }
 
           // Check for Blood Glucose
-          int bloodGlucose = patientData['Blood Glucose'];
-          if (_isAbnormal(bloodGlucose, 70, 140)) {
-            abnormalities.add([
-              'Blood Glucose',
-              '${bloodGlucose} mg/dL',
-              'Abnormal Blood Glucose',
-              'Maintain a healthy diet and monitor glucose levels',
-            ]);
-          }
+           int bloodGlucose = patientData['Blood Glucose'];
+                if (_isAbnormal(bloodGlucose, 70, null)) {
+                  abnormalities.add([
+                    patientData['Name'],
+                    '${bloodGlucose} mg/dL',
+                    'Hypoglycemia',
+                    'IMPORTANT: Initially take 15 gm-25 gm or carbs, and then after 15 min, check the blood sugar level. Repeat the cycle if it still remains low. Give sugary drinks or juices slowly. You can add an apple, grapes, or orange for faster results.  Limit alcohol and caffeine. Add fruits to your diet. Include snacks in between the major meals. Take 5-6 small and frequent meals.',
+                  ]);
+                } else if (_isAbnormal(bloodGlucose, 0, 140)) {
+                  abnormalities.add([
+                    patientData['Name'],
+                    '${bloodGlucose} mg/dL',
+                    'Hyperglycemia',
+                    'Complex carbs, high protein, moderate fat (omega-3 and omega-6 fatty acids), high fibre and plenty of fluid. Add more of fibre in the diet such as whole grain or multigrain cereals, millets, fruits, vegetables, and nuts and oilseeeds (almonds, walnuts, chia seeds, flaxseeds, watermelon seeds etc). Add protein sources such as pulses, low-fat dairy products, eggs, fish, and lean meat. Prefer mustard oil or olive oil for cooking and avoid reheated oil, coconut oil, and palm oil. Avoid sugar, honey, jaggery, juices, sugary and carbonated drinks. Avoid low glycemic index foods such as banana, litchi, mango, grapes, chiku, potato, sweet potato, and colocasia Reduce simple carbs and prefer complex carbs over them. Avoid refined products, bakery and fried foods (white rice, pasta, white bread, junk food). Do not stay hungry for more than 3 hours as it may lead to fluctuation of sugar levels. Prefer brisk walking.',
+                  ]);
+                }
 
           return pw.Table.fromTextArray(
             headers: <String>[
               'Parameter',
               'Value',
               'Abnormality',
-              'Suggestion',
+              'Recommendation',
             ],
             data: abnormalities,
           );
@@ -353,98 +389,130 @@ bool _isAbnormal(value, min, max) {
             switch (parameter) {
               case 'BMI':
                 double bmi = _calculateBMI(patientData['Height'], patientData['Weight']);
-                if (_isAbnormal(bmi, 18.5, 30)) {
-                  if (bmi < 18.5) {
-                    abnormalities.add([
-                      patientData['Name'],
-                      '${bmi.toStringAsFixed(1)}',
-                      'Underweight',
-                      'Increase food intake and ensure a balanced diet',
-                    ]);
-                  } else if (bmi >= 30) {
-                    abnormalities.add([
-                      patientData['Name'],
-                      '${bmi.toStringAsFixed(1)}',
-                      'Obesity',
-                      'Adopt a healthier diet and regular exercise',
-                    ]);
-                  }
-                }
+          if (_isAbnormal(bmi, 18.5, 30)) {
+            if (bmi < 18.5) {
+              abnormalities.add([
+                'BMI',
+                '${bmi.toStringAsFixed(1)}',
+                'Underweight',
+                'Increase food intake, take nutrient rich foods, take protein and weight gainer supplements. More carbs and protein, high PUFA sources to add calories in diet with essentiall vit and minerals. Take calorie-dense foods like smoothies, shakes, nuts and oilseeds, cheese, and full-cream dairy products. High biological value proteins like egg, lean meat, and fish. The diet must include whole grains, millet, pulses, and plenty of fruits and vegetables. Never skip major meals, especially breakfast. Breakfast should be the heaviest meal of the day. Take 5-6 small and frequent meals. ',
+              ]);
+            } 
+             else if (bmi >= 18.5 || bmi <= 24.9) {
+              abnormalities.add([
+                'BMI',
+                '${bmi.toStringAsFixed(1)}',
+                'Healthy',
+                'combination of simple and complex carbs, moderate fat and protein with fruits and vegetables. Physically active. Include combination of simple and complex carbohydrates. Include protein sources such as low-fat dairy products, egg, fish, lean meat, and pulses Physical activity should be maintained. Include plenty of seasonal fruits and vegetables, as it add fiber to your diet. Remove unsaturated fat from your diet such as palm oil, reheated oil, coconut oil, and red meat. Prefer omega 3 and omega 6 fatty acid-containing food products like nuts and oilseeds, olive oil, fish, fish oil, and eggs.',
+              ]);
+            } else if (bmi >= 25 || bmi <= 29.9) {
+              abnormalities.add([
+                'BMI',
+                '${bmi.toStringAsFixed(1)}',
+                'Overweight',
+                'less carbs, high protein, low fat. More of fiber. Maintain hydration level and physically active. Avoid junk and fried food. Include more of complex carbs in your diet such as whole grains, whole cereals, millet etc. Inlclude more fibre in the diet such as fruits and vegetables. Add more of protein in the diet. Avoid fried, packaged, junk and, outside food. Avoid salad dressing and binge eating. Avoid using reheated oil, palm oil, and coconut oil. include walnuts, almonds, flaxseeds, chia seeds, sunflower, and watermelon seeds.  ',
+              ]);
+            } else if (bmi >= 30) {
+              abnormalities.add([
+                'BMI',
+                '${bmi.toStringAsFixed(1)}',
+                'Obesity',
+                'Control diet, eat less junk food, control salt and sugar levels. Less carbs, high protein, low fat. More of fiber. Maintain hydration level and physically active. Avoid junk and fried food. Avoid simple carbs and prefer complex carbs over them like whole grain, whole cereals, millets or multigrain products. Avoid baked and packaged products. Maintain physical acitivity and remove calorie dense products from the diet such as juices, shakes, sugar and sugary products, carbonated drinks abd junk food. Prefer combination of healthy fats and oils such as mustard oil, olive oil, seeds, soyabean. Avoid egg yolks and red meat.',
+              ]);
+            }
+          }
                 break;
               case 'Blood Pressure':
                 int highBP = patientData['High BP'];
-                int lowBP = patientData['Low BP'];
-                if (_isAbnormal(highBP, 120, null) || _isAbnormal(lowBP, 80, null)) {
-                  abnormalities.add([
-                    patientData['Name'],
-                    '${highBP}/${lowBP} mmHg',
+          int lowBP = patientData['Low BP'];
+          if (_isAbnormal(highBP, 120, null) || _isAbnormal(lowBP, 80, null)) {
+            abnormalities.add([
+              'Blood Pressure',
+              '${highBP}/${lowBP} mmHg',
               'Hypotension',
-              'Use more salts, drink more water, eat smaller meals and limit alcohol. Check for your blood glucose level and thyroid level and wear compression stockings. Get yourself seen to a medical supervisor for any infection alert.',
-                  ]);
-                }else if(_isAbnormal(highBP, 0, 140) || _isAbnormal(lowBP, 0, 90)) {
-                  abnormalities.add([
-                    patientData['Name'],
-                    '${highBP}/${lowBP} mmHg',
-              'HyperTension',
-              'Reduce salt (sodium) intake, quit smoking and limit alcohol, include healty protein-rich foods such as fish, seafood, legumes, yoghurt, healthy fats and oils, etc. Practice healthy excercise and weight control. Check your blood glucose and thyroid level. Get checked by a medical supervisor.',
-                  ]);
-                }
+              'Use more salts, drink more water, eat smaller meals and limit alcohol. Use saline solutions, and pickles, or add more salt to the diet. Add B12 and folate to the diet such as lean meat, fish, fish oil, cheese, dairy products, GLVs, fruits and vegetables, and beans. Reduce carbs intake. Drink plenty of fluid. Include caffeine such as coffee caffeinated drinks. ',
+            ]);
+          }else if (_isAbnormal(highBP, 120, 129) || _isAbnormal(lowBP, 80, 84)) {
+            abnormalities.add([
+              'Blood Pressure',
+              '${highBP}/${lowBP} mmHg',
+              'Normal',
+              'Take a combination of simple and complex carbs. Moderate amount of protein and fat. Add fruits and vegetables to your diet. Take only 5-6 gm of salt a day. Low-fat dairy products to be included. Maintain hydration level and physical activity.',
+            ]);
+          }else if (_isAbnormal(highBP, 130, 139) || _isAbnormal(lowBP, 85, 90)) {
+            abnormalities.add([
+              'Blood Pressure',
+              '${highBP}/${lowBP} mmHg',
+              'High-normal',
+              'Avoid extra salt, pickles, papad, and salad dressing. Prefer low-fat dairy products. Follow the DASH diet which Includes more fiber such as fruits, vegetables, whole grains, whole cereals, millets, and seeds. It includes fat-free or low-fat dairy products, fish, poultry, beans. Limit sugar and saturated fat such as meat, reheated oil, palm oil, and full-fat dairy products. Physical activity should be maintained. Maintain hydration level and avoid alcohol consumption. Reduce salt upto 2-3 gm per day.',
+            ]);
+          }
+          else if (_isAbnormal(highBP, 0, 140) || _isAbnormal(lowBP, 0, 90)) {
+            abnormalities.add([
+              'Blood Pressure',
+              '${highBP}/${lowBP} mmHg',
+              'Hypertension',
+              'Reduce salt (sodium) intake, quit smoking and limit alcohol, include healty protein-rich foods such as fish, seafood, legumes, yoghurt, healthy fats and oils, etc. Include more fibre to the diet such as whole grains, whole cereals, millets, fruits and vegetables to your diet. Physical activity should be maintained. Maintain hydration level and avoid alcohol consumption. Avoid refined, baked, packaged, fried, and junk food. Reduce salt consumption to 1500 mg per day. Avoid extra salty products, salad dressing. Instead you can use lemon or citrus food products.  ',
+            ]);
+          }
                 break;
               case 'Heart Rate':
                 int heartRate = patientData['Heart Rate'];
-                if (_isAbnormal(heartRate, 60, null)) {
-                  abnormalities.add([
-                    patientData['Name'],
-                    '${heartRate} bpm',
-                    'low Heart Rate',
-                    'Consult a healthcare provider',
-                  ]);
-                }else if (_isAbnormal(heartRate, 0, 100)) {
-                  abnormalities.add([
-                    patientData['Name'],
-                    '${heartRate} bpm',
-                    'High Heart Rate',
-                    'Consult a healthcare provider',
-                  ]);
-                }
+          if (_isAbnormal(heartRate, 60, null)) {
+            abnormalities.add([
+              'Heart Rate',
+              '${heartRate} bpm',
+              'Bradycardia',
+              'Eat magnesium rich foods such as nuts, cereals, spinach, etc. Foods rich in Omega-3-FA such as walnuts, vegetable oils, seafoods, etc. Cardioprotective foods suc has green vegetables, fresh fruits, etc. Food containing stimulants such as alcohol, beer, coffee, chocolate, etc should be avoided. Diet followed by low-fat, low-salt and moderate sugar. Included fruits and vegetables. And most important physically active. Include fruits and vegetables, nuts, and beans to your diet. Include omega-3 and omega-6 fatty acid food products such as egg white, fish, lean meat. Avoid excess intake of salt, salad dressings, pickles, packaged food and other salty products. Avoid alcohol, smoking, and stress. Inlucde essential minerals in your diet such as calcium, potassium and magnesium such as green leafy veg, seeds, dairy products, fruits, beans and legumes.',
+            ]);
+          }
+          if (_isAbnormal(heartRate, 0, 100)) {
+            abnormalities.add([
+              'Heart Rate',
+              '${heartRate} bpm',
+              'Tachycardia',
+              'Maintain healthy body weight. Less carbs, less fat, low salt, moderate protein, and high fibre. Prefer omega-3 and omega-6 fatty acids such as olive oil, fish, fish oil, nuts and seeds such as almonds, walnuts, chia seeds, flaxseeds, sunflower seeds, pumpkin seeds and watermelon seeds. Limit potassium-rich foods such as banana, potato, lemon, coconut water, soybean, green leafy veg, egg yolk, and dried fruits Add more fibre to your diet such as fruits and veg. Avoid alcohol, caffeine and smoking. Add calcium, magnesium, vit D as important minerals. ',
+            ]);
+          }
                 break;
               case 'SpO2':
                 int spO2 = patientData['SpO2'];
-                if (_isAbnormal(spO2, 95, 100)) {
-                  abnormalities.add([
-                    patientData['Name'],
-                    '${spO2} %',
-                    'Low Oxygen Saturation',
-                    'Seek medical attention',
-                  ]);
-                }
+          if (_isAbnormal(spO2, 95, 100)) {
+            abnormalities.add([
+              'SpO2',
+              '${spO2} %',
+              'Low Oxygen Saturation',
+              'Include vitamins and minerals in your diet to regulate oxygen level such as iron, folic acid, and B12. Include fruits and vegetables such as citrus fruits, pomegranate, berries, kiwi, spinach, beans, beetroot, green leafy veg etc for iron.  Never skip major meals and be physically active. Plenty of fluid to be taken including juices, soups etc. Avoid alcohol, smoking and caffeine intake.',
+            ]);
+          }
                 break;
               case 'Temperature':
-                int temperature = patientData['Temperature'];
-                if (_isAbnormal(temperature, 96, null)) {
-                  abnormalities.add([
-                    patientData['Name'],
-                    '${temperature} °F',
-                    'Abnormal Temperature',
-                    'Monitor and consult a healthcare provider if necessary',
-                  ]);
-                }else if(_isAbnormal(temperature, null, 100)) {
-                  abnormalities.add([
-                    patientData['Name'],
-                    '${temperature} °F',
-                    'High Temperature',
-                    'Monitor and consult a healthcare provider if necessary',
-                  ]);
-                }
+               int temperature = patientData['Temperature'];
+          if (_isAbnormal(temperature, 96, null)) {
+            abnormalities.add([
+              'Temperature',
+              '${temperature} °F',
+              'low',
+              'Include High calorie, high fat, high carbs and morderate protein diet.   Include high biological value protein such as eggs, fish, lean meat etc. Eat antioxidant rich food such as fruits like berries, citrus fruits.  Drink hot beverages like hot soups, caffeine and a bit of any alcoholic beverages.',
+            ]);
+          }
+          else if (_isAbnormal(temperature, 0, 100)) {
+            abnormalities.add([
+              'Temperature',
+              '${temperature} °F',
+              'high',
+              'Include more simple carbs. Include soft or well-cooked food. Add fruits to your diet. Take plenty of fluids including soups, juices, coconut water, lemon water, smoothies, shakes etc. Add antioxidants (vit C and Vit E) such as citrus foods, green leafy veg etc. Add high protein sources such as pulses, eggs, dairy products, lean meat, fish etc. Include juices made of herbs and condiments.',
+            ]);
+          }
                 break;
               case 'Blood Glucose':
                 int bloodGlucose = patientData['Blood Glucose'];
-                if (_isAbnormal(bloodGlucose, 70, 140)) {
+                if (_isAbnormal(bloodGlucose, 70, null)) {
                   abnormalities.add([
                     patientData['Name'],
                     '${bloodGlucose} mg/dL',
-                    'Abnormal Blood Glucose',
-                    'Maintain a healthy diet and monitor glucose levels',
+                    'Hypoglycemia',
+                    'IMPORTANT: Initially take 15 gm-25 gm or carbs, and then after 15 min, check the blood sugar level. Repeat the cycle if it still remains low. Give sugary drinks or juices slowly. You can add an apple, grapes, or orange for faster results.  Limit alcohol and caffeine. Add fruits to your diet. Include snacks in between the major meals. Take 5-6 small and frequent meals.',
                   ]);
                 }
                 break;
@@ -453,37 +521,40 @@ bool _isAbnormal(value, min, max) {
             }
           }
           return pw.Table.fromTextArray(
-          headers: <String>[
-            'Parameter',
-            'Value',
-            'Abnormality',
-          ],
-          headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-          cellAlignment: pw.Alignment.centerLeft,
-          data: abnormalities.map((row) {
-            return [
-              row[0], // Parameter
-              row[1], // Value
-              row[2], // Abnormality
-              pw.Container(
-                width: double.infinity,
-                child: pw.Text(
-                  row[3], // Suggestion
-                  softWrap: true,
-                  style: const pw.TextStyle(fontSize: 10),
-                ),
-              ),
-            ];
-          }).toList(),
-          columnWidths: {
-            0: pw.FixedColumnWidth(100), // Adjust column widths as needed
-            1: pw.FixedColumnWidth(70),
-            2: pw.FixedColumnWidth(120),
-          },
-          cellStyle: const pw.TextStyle(
-          ),
-          cellHeight: 30,
-  
+  headers: <String>[
+    'Parameter',
+    'Value',
+    'Abnormality',
+    'Recommendation',
+  ],
+  headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
+  cellAlignment: pw.Alignment.centerLeft,
+  data: abnormalities.map((row) {
+    return [
+      row[0], // Parameter
+      row[1], // Value
+      row[2], 
+      row[3],// Abnormality
+      pw.Container(
+        width: double.infinity, // Make container expand to full width
+        child: pw.Text(
+          row[3], // Recommendation
+          softWrap: true, // Enable text wrapping
+          style: const pw.TextStyle(fontSize: 10),
+        ),
+      ),
+    ];
+  }).toList(),
+  columnWidths: {
+    0: pw.FixedColumnWidth(100), // Parameter column width
+    1: pw.FixedColumnWidth(70),  // Value column width
+    2: pw.FixedColumnWidth(70),  // Abnormality column width
+    3: pw.FlexColumnWidth(),     // Recommendation column width to take remaining space
+  },
+  cellStyle: const pw.TextStyle(
+    fontSize: 10,
+  ),
+  cellHeight: 30,
         );
         
       },
