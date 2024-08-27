@@ -193,7 +193,7 @@ bool _isAbnormal(value, min, max) {
               style: pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
             ),]),
             pw.SizedBox(height: 30),
-            pw.Table.fromTextArray(
+            pw.TableHelper.fromTextArray(
             headers: const <String>['Parameter', 'Value'],
             data: <List<String>>[
               <String>['Name', patientData['Name']!],
@@ -362,34 +362,36 @@ bool _isAbnormal(value, min, max) {
                 }
 
           return [
-            pw.Table.fromTextArray(
+            
+            pw.SizedBox(height: 30),
+            pw.TableHelper.fromTextArray(
             headers: <String>[
               'Parameter',
               'Value',
               'Abnormality',
               'Recommendation',
             ],
-            headerCount: 4,
            headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold),
-  cellAlignment: pw.Alignment.center,
+  cellAlignment: pw.Alignment.centerLeft,
   data: abnormalities.map((Column) {
     return [
       Column[0],
       Column[1],
       Column[2],
       Column[3],
+      
     ];
   }).toList(),
   columnWidths: {
      0: const pw.FlexColumnWidth(), // Use intrinsic width for each column
           1: const pw.FlexColumnWidth(), // Use intrinsic width for each column
-          2: const pw.FlexColumnWidth(), // Use intrinsic width for each column
+          2: const pw.FlexColumnWidth(),// Use intrinsic width for each column
           3: const pw.FlexColumnWidth(),  // Recommendation column width to take remaining space
   },
   cellStyle: const pw.TextStyle(
     fontSize: 10,
   ),
-
+  cellPadding: const pw.EdgeInsets.all(10)
         )];
         
       },
@@ -553,7 +555,7 @@ bool _isAbnormal(value, min, max) {
               
             ),]),
             pw.SizedBox(height: 30),
-            pw.Table.fromTextArray(
+            pw.TableHelper.fromTextArray(
   headers: <String>[
     'Name',
     'Parameter',
